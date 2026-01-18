@@ -16,12 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from attendance import views
+from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/register/', views.register, name='register'),
+    path('api/login/', views.login, name='login'),
+    path('api/profile/', views.get_user_profile, name='profile'),
     path('api/mark-attendance/', views.mark_attendance, name='mark-attendance'),
     path('api/attendance-report/', views.attendance_report, name='attendance-report'),
-    path('', views.home, name='home'), # एक 'home' फंक्शन views.py में बना लें
+    path('', views.home, name='home'),
+    path('api/user-qr/<int:user_id>/', views.user_qr),
 ]
+
+# Serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

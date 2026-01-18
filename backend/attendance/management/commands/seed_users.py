@@ -11,9 +11,14 @@ class Command(BaseCommand):
             user, created = User.objects.get_or_create(
                 username=username,
                 defaults={
-                    'password': 'pass1234',
                     'role': role,
                     'qr_code': qr
                 }
             )
+            if created:
+                user.set_password('pass1234')
+                user.save()
+                self.stdout.write(f'Created user: {username}')
+            else:
+                self.stdout.write(f'User already exists: {username}')
         self.stdout.write(self.style.SUCCESS('Seeded users'))

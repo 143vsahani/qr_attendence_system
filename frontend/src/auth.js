@@ -1,0 +1,6 @@
+// src/auth.js
+export const logout = () => {
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+  window.location.href = "/login"; // redirect to login page
+};
